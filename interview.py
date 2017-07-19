@@ -19,7 +19,6 @@ def beginInterview():
     session.attributes['numberOfQuestions'] = 0
     task_msg = prefix+render_template('task')
     return question(task_msg) # makes alexa ask question
-    #return question('Hello')
 
 @ask.intent("NoIntent")
 def all_done():
