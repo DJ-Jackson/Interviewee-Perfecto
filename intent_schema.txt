@@ -1,0 +1,19 @@
+{
+  "intents": [
+    {
+      "intent": "AMAZON.NoIntent"
+    },
+    {
+      "intent": "AMAZON.YesIntent"
+    },
+    {
+      "intent": "GreetingIntent"
+    },
+    {
+      "intent": "GoodGreetingResponseIntent"
+    },
+    {
+      "intent": "AnythingIntent"
+    }
+  ]
+}

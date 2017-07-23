@@ -1,0 +1,10 @@
+AMAZON.NoIntent stop
+AMAZON.NoIntent end interview
+AMAZON.NoIntent end my interview
+AMAZON.NoIntent bye
+AMAZON.YesIntent alright
+GreetingIntent Start my interview
+GoodGreetingResponseIntent How are you
+GoodGreetingResponseIntent Im good how are you
+AnythingIntent I am a person
+AnythingIntent Me
