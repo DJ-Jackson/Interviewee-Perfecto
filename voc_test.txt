@@ -1,0 +1,59 @@
+Instructions for running the recognizer directly
+================================================
+
+You need to configure the skill on-line as follows.
+
+1. Start a new skill, call it something distinct.
+2. Enter the alexa definitions as follows:
+--------------------------------------------------
+Intents
+-------
+
+{
+  "intents": [
+    {
+      "intent": "YesIntent"
+    },
+    {
+      "intent": "NoIntent"
+    },
+    {
+      "slots": [
+        {
+          "name": "wa",
+          "type": "inword"
+        }
+      ],
+      "intent": "AnswerIntent"
+    }
+  ]
+}
+
+Custom Slot Type
+----------------
+Add Slot Type
+Type : 'inword'
+Values: 'conversation'
+
+Sample Utterances
+-----------------
+YesIntent yes
+YesIntent ready
+YesIntent ok
+NoIntent no
+NoIntent stop
+NoIntent quit
+AnswerIntent {wa} {wa}
+--------------------------------------------------
+Note that the AnswerIntent really does need 2 wa's in it.
+
+3. Add the following line to your templates.yaml file:
+voctest: Welcome to the recognition tester.
+ 
+3. Start ngrock and enter the endpoint address in the Configuration.
+4. Start your python script. Use voc_test.py to try things out.
+
+That's it!
+
+
+
