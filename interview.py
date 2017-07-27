@@ -1,7 +1,8 @@
 import sys
 import re
 import logging
-from random import randint
+import random
+import yaml
 from flask import Flask, render_template
 from flask_ask import Ask, statement, question, session
 
@@ -50,29 +51,33 @@ def greeting():
     return question(greeting_msg)
 
 # I want to have a gretting response that is for when the user does not ask the interviewer how they are doing and alexa will give a tip before moving on 
-@ask.intent("GoodGreetingResponseIntent")
+@ask.intent("GreetingResponseIntent")
 def greetingResponse():
     if session.attributes['state'] == 'Greeting': # origin state
         
         session.attributes['state'] = 'GreetingResponse' # set current state
         sys.stderr.write('-----------------------[NEW state]----> '+str(session.attributes['state'])+'\n')
         sys.stderr.flush()
+ #       if ('Answer' in GreetingResponseIntent)
     prefix = render_template('greeting_response')
     greeting_response_msg = prefix + render_template('first_question')
+    
     session.attributes['numberOfQuestions'] = 1
+    
     return question(greeting_response_msg)
 
 # the question asking random generating doesn't work yet:(
-"""@ask.intent("AnythingIntent")
+@ask.intent("AnythingIntent")
 def generateQuestion():
     if session.attributes['state'] == 'GreetingResponse':
          session.attributes['state'] = 'Question'
          sys.stderr.write('-----------------------[NEW state]----> '+str(session.attributes['state'])+'\n')
          sys.stderr.flush()
-    questionNumber = randint(1, 10)
-    question_msg = render_template('questionNumber')
+    with open('questions.yaml') as f:
+        questions = yaml.load(f.read())
+    question_msg = random.choice(questions)
     session.attributes['numberOfQuestions'] += 1
-    return question(question_msg)"""
+    return question(question_msg)
         
 
 @ask.intent("AMAZON.NoIntent")
@@ -96,6 +101,27 @@ def all_done():
     msg = 'Well then, I hope you had a nice interview'
 
     return statement(msg)
+
+@ask.intent("AnswerIntent")
+def answer(wa):
+    words = wa
+    trace('------------------------------------------------------------')
+    trace(words+'\n')
+
+# write the input to a text file
+    with open('voc_strings.txt', 'w') as fout:
+        fout.write(words+'\n')
+
+
+    msg = 'i heard: . {}... '.format(words)
+
+    with open('voc_strings.txt') as speech_text:
+        stxt =   speech_text.read()
+    
+        statement = str((len(re.findall(r'\w*ing',stxt))))
+
+    return question(statement+' do you want to try again?')
+
 
 
 

@@ -1,4 +1,4 @@
-hello: Welcome to College Interview. I will ask you a series of commonly asked college interview questions for you to practice. Ready?
+hello: Welcome to College Interview. Ready to practice?
 
 instruction: Say “Repeat Question” to hear the question again, say “Next Question”  to move on, and say “End Interview” to end the interview and receive your feedback. If you are ready to start your interview say. 'start my interview'.
 
@@ -9,28 +9,3 @@ greeting tip (if they don't say 'how are you?'): Make sure to ask your interview
 greeting_response: I am good, thank you,  
 
 first_question: Tell me about yourself. 
-
-Easy Questions:
-
-1: How are you in school?
-
-2: what is your favorite subject and why?
-
-3: why do you want to come to this school?
-
-4: what do you usually do in your free time? What are your hobbies?
-
-5: are you excited to be going to college?
-
-
-Hard Questions:
-
-6: Who do you admire and why?
-
-7: what inspires you to get up every day?
-
-8: where do you see yourself in ten years?
-
-9: If you had one, what woud be your life moto?
-
-10: What three words would your friends use to describe you? please explain.
