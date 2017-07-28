@@ -6,6 +6,12 @@ import yaml
 from flask import Flask, render_template
 from flask_ask import Ask, statement, question, session
 
+# print things to the command window
+def trace(string):
+    sys.stderr.write(string+'\n')
+    sys.stderr.flush()
+    return
+
 app = Flask(__name__)
 ask = Ask(app, "/")
 
@@ -102,20 +108,26 @@ def all_done():
 
     return statement(msg)
 
+
+# get the recognition, speak it back and show on the screen
 @ask.intent("AnswerIntent")
 def answer(wa):
+    if session.attributes['state'] == 'Question':
+         session.attributes['state'] = 'Recording'
+         sys.stderr.write('-----------------------[NEW state]----> '+str(session.attributes['state'])+'\n')
+         sys.stderr.flush()
     words = wa
     trace('------------------------------------------------------------')
     trace(words+'\n')
 
 # write the input to a text file
-    with open('voc_strings.txt', 'w') as fout:
+    with open('user_response.txt', 'w') as fout:
         fout.write(words+'\n')
 
 
     msg = 'i heard: . {}... '.format(words)
 
-    with open('voc_strings.txt') as speech_text:
+    with open('user_response.txt') as speech_text:
         stxt =   speech_text.read()
     
         statement = str((len(re.findall(r'\w*ing',stxt))))
