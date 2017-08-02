@@ -25,6 +25,9 @@ def beginInterview():
     # do I need and sessions?
     session.attributes['state'] = 'Hello' # set state as what you are in
     session.attributes['numberOfQuestions'] = 0
+    session.attributes['badWords'] = 0
+    session.attributes['goodWords'] = 0
+    session.attributes['emptyWords'] = 0
     session.attributes['question']  = None #question number asked
     #hello_msg = render_template('hello')
     hello_msg = "Welcome to College Interview. Ready to practice?"
@@ -92,22 +95,24 @@ def generateQuestion(Freeform):
     with open('user_responses.txt', 'a') as fout:
         fout.write(words+'\n')
 
-    msg = 'i heard: . {}... '.format(words)
-
-    with open('user_response.txt') as speech_text:
+    """  with open('user_response.txt') as speech_text:
         stxt =   speech_text.read()
     
-        statement = str((len(re.findall(r'\w*ing',stxt))))
+        statement = str((len(re.findall(r'\w*ing',stxt))))"""
 
     return question(question_msg)
-         
 
-
-
-# write the input to a text file
-
-#    return question(statement+' do you want to try again?')
-        
+"""@ask.intent("SkipIntent")
+def repeatQuestion(Freeform):
+    session.attributes['state'] = 'Skip'
+    question_msg = generateQuestion(Freeform)
+    return question(question_msg)"""
+    
+    
+# FIXXXXXX
+@ask.intent("SkipIntent")
+def skipQuestion(Freeform):
+    skipQuestion = generateQuestion(Freeform)
 
 @ask.intent("AMAZON.NoIntent")
 def all_done():
@@ -133,34 +138,6 @@ def all_done():
 
 
 # get the recognition, speak it back and show on the screen
-@ask.intent("AnswerIntent")
-def answer(wa):
-    if session.attributes['state'] == 'Question':
-         session.attributes['state'] = 'Recording'
-         sys.stderr.write('-----------------------[NEW state]----> '+str(session.attributes['state'])+'\n')
-         sys.stderr.flush()
-   #words isn't a thing right now - FIXXXXXX
-    words = wa
-    sys.stderr.write('------------------------------------------------------------')
-    sys.stderr.write(words+'\n')
-    sys.stderr.flush()
-
-
-# write the input to a text file
-    with open('user_responses.txt', 'w') as fout:
-        fout.write(words+'\n')
-
-    msg = 'i heard: . {}... '.format(words)
-
-    with open('user_response.txt') as speech_text:
-        stxt =   speech_text.read()
-    
-        statement = str((len(re.findall(r'\w*ing',stxt))))
-
-    return question(statement+' do you want to try again?')
-
-
-
 
 if __name__ == '__main__':
     app.run(debug=True)
