@@ -15,6 +15,28 @@ def trace(string):
 app = Flask(__name__)
 ask = Ask(app, "/")
 
+neg = 0
+pos = 0
+emp = 0
+
+def rating():
+    global pos, neg, emp
+    session.attributes['rating'] = 0 #rating starts at 0 points
+    neg *= 0.75
+    pos *= 1
+    emp *= 0.25
+    session.attributes['rating'] = pos - neg - emp
+    ratings = session.attributes['rating']
+    round_msg = 'Your interview rating based on your responses was a ' + str(session.attributes['rating'])+'.'
+    if ratings >= 3:
+        return round_msg + ' You had a pretty positive interview!'
+    if ratings <= -2:
+        return round_msg + ' You used more negative and empty words than positive words by a wide margin. Try to be a tad bit more positive in your actual interview.'
+    if -2 < ratings < 3:
+        return round_msg + ' You had an almost equal mix of positive and negative and empty words in your interview. Try to be more positive in your actual interview.'
+
+
+
 # first regular expression 'w' and then every time after that do 'a'
 @ask.launch
 def beginInterview():
@@ -30,7 +52,7 @@ def beginInterview():
     session.attributes['emptyWords'] = 0
     session.attributes['question']  = None #question number asked
     #hello_msg = render_template('hello')
-    hello_msg = "Welcome to College Interview. Ready to practice?"
+    hello_msg = "Welcome to College Interviewee. Ready to practice?"
     return question(hello_msg) # makes alexa ask question
 
 @ask.intent("AMAZON.YesIntent")
@@ -46,7 +68,7 @@ def instructions():
         sys.stderr.write('-----------------------[NEW state]----> '+str(session.attributes['state'])+'\n')
         sys.stderr.flush()
     #instruction_msg = render_template('instruction')
-    instruction_msg = "Say Repeat Question to hear the question again, say Next Question  to move on, and say End Interview to end the interview and receive your feedback. If you are ready to start your interview say. start my interview."
+    instruction_msg = "Say Repeat Question to hear the question again, Next Question  to move on, and End Interview to end the interview and receive your feedback. If you are ready, say start my interview."
     return question(instruction_msg)
     
     
@@ -65,13 +87,14 @@ def greeting():
 
 @ask.intent("QuestionIntent")
 def generateQuestion(Freeform):
+    global pos, neg, emp
     #words = str(scooby)
     if (session.attributes['state'] == 'Greeting' and session.attributes['numberOfQuestions'] == 0):
          session.attributes['state'] = 'Question'
          sys.stderr.write('-----------------------[NEW state]----> '+str(session.attributes['state'])+'\n')
          sys.stderr.flush()
       #   prefix = render_template('greeting_response')
-         greeting_response_msg = "I am good, thank you, Tell me about yourself. "
+         greeting_response_msg = "I'm doing well, thank you for asking. Tell me about yourself. "
          session.attributes['numberOfQuestions'] == 1
          return question(greeting_response_msg)
     
@@ -91,14 +114,29 @@ def generateQuestion(Freeform):
     sys.stderr.write('------------------------------------------------------------')
     sys.stderr.write(words +'\n')
     sys.stderr.flush()
-    
-    with open('user_responses.txt', 'a') as fout:
-        fout.write(words+'\n')
+
+
+    pos_words = ['hard-working',  'dedication', 'thank you', 'appreciate', 'diligent', 'motivation', 'initiative', 'grateful', 'determined', 'dynamic', 'mature', 'independent', 'happy', 'enjoy', 'splendid', 'goal', 'interested', 'opportunity', 'individual', 'fortunate', 'incredible', 'inspire', 'influence', 'achieve', 'honest', 'benefit', 'willing', 'effort', 'fantastic', 'balance', 'interact', 'enlightening', 'culture', 'innovation', 'involved', 'leadership']
+    neg_words = ['hate', 'dumb', 'stupid', 'ugly', 'lame', 'weird', 'nasty', 'terrible', 'horrible', 'awful', 'heck', 'darn', 'poop', 'shit', 'fuck', 'damn', 'hell', 'ass', 'bitch', 'cunt', 'cock', 'pussy', 'dick', 'asshole', 'safety school', 'backup school', 'sucks', 'blows', 'obsessed', 'shucks', 'drugs', 'alcohol', 'avoid', 'worst', 'desperate', 'failure', 'you know', 'you guys', 'bad']
+    emp_words = ['sorry', 'kind of', 'sort of', 'amazing', 'basically', 'kind of', 'actually', 'so', 'stuff', 'sure', 'yeah', 'I don’t know', 'well', 'maybe', 'technically', 'I think', 'mostly', 'wait', 'I guess']
+    pos_words = "|".join(pos_words)
+    neg_words = "|".join(neg_words)
+    emp_words = "|".join(emp_words)
+    pos += len(re.findall(pos_words, Freeform))
+    neg += len(re.findall(neg_words, Freeform))
+    emp += len(re.findall(emp_words, Freeform))
+
+
+    '''with open('user_responses.txt  
 
     """  with open('user_response.txt') as speech_text:
         stxt =   speech_text.read()
     
+<<<<<<< HEAD
         statement = str((len(re.findall(r'\w*ing',stxt))))"""
+=======
+        statement = str((len(re.findall(r'\w*ing',stxt))))'''
+>>>>>>> 2782274c50357c296a2c33803b5c710fb19c71f7
 
     return question(question_msg)
 
@@ -116,7 +154,7 @@ def skipQuestion(Freeform):
 
 @ask.intent("AMAZON.NoIntent")
 def all_done():
-
+    global pos, neg, emp
     sys.stderr.write('\n-----------------------[OLD state]----> '+str(session.attributes['state'])+'\n')
     sys.stderr.flush()
 
@@ -132,7 +170,7 @@ def all_done():
         session.attributes['state'] = 'Goodbye2'
         sys.stderr.write('-----------------------[NEW state]----> '+str(session.attributes['state'])+'\n')
         sys.stderr.flush()
-    msg = 'Well then, I hope you had a nice interview'
+    msg = rating()+ " " + 'Well then, I hope you had a nice interview.'
 
     return statement(msg)
 
