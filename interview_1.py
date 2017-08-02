@@ -65,7 +65,7 @@ def instructions():
         sys.stderr.write('-----------------------[NEW state]----> '+str(session.attributes['state'])+'\n')
         sys.stderr.flush()
     #instruction_msg = render_template('instruction')
-    instruction_msg = "Say Repeat Question to hear the question again, Next Question  to move on, and End Interview to end the interview and receive your feedback. If you are ready, say. start my interview."
+    instruction_msg = "Say Repeat Question to hear the question again, Next Question  to move on, and End Interview to end the interview and receive your feedback. If you are ready, say start my interview."
     return question(instruction_msg)
     
     
