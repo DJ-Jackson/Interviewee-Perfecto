@@ -27,7 +27,7 @@ def rating():
     emp_r = emp * 0.25
     session.attributes['rating'] = pos_r - neg_r - emp_r
     ratings = session.attributes['rating']
-    round_msg = 'You used ' + str(pos) + ' positive words, ' + str(neg) ' negative words, and ' +str(emp) ' empty words. Your score was a ' + str(session.attributes['rating'])+'.'
+    round_msg = 'You used ' + str(pos) + ' positive words, ' + str(neg) ' negative words, and ' +str(emp) ' empty words in your interview. Your score was a ' + str(session.attributes['rating'])+'.'
     if ratings >= 3:
         return round_msg + ' You had a pretty positive interview!'
     if ratings <= -2:
