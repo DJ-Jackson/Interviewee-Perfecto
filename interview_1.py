@@ -27,7 +27,7 @@ def rating():
     emp_r = emp * 0.25
     session.attributes['rating'] = pos_r - neg_r - emp_r
     ratings = session.attributes['rating']
-    round_msg = 'You used ' + str(pos) + ' positive words, ' + str(neg) ' negative words, and ' +str(emp) ' empty words in your interview. Your score was a ' + str(session.attributes['rating'])+'.'
+    round_msg = 'You used ' + str(pos) + ' positive words, ' + str(neg) + ' negative words, and ' +str(emp) +' empty words in your interview. Your score was a ' + ratings +'.'
     if ratings >= 3:
         return round_msg + ' You had a pretty positive interview!'
     if ratings <= -2:
@@ -126,17 +126,6 @@ def generateQuestion(Freeform):
     neg += len(re.findall(neg_words, Freeform))
     emp += len(re.findall(emp_words, Freeform))
 
-
-    '''with open('user_responses.txt  
-
-    """  with open('user_response.txt') as speech_text:
-        stxt =   speech_text.read()
-    
-<<<<<<< HEAD
-        statement = str((len(re.findall(r'\w*ing',stxt))))"""
-=======
-        statement = str((len(re.findall(r'\w*ing',stxt))))'''
->>>>>>> 2782274c50357c296a2c33803b5c710fb19c71f7
 
     return question(question_msg)
 
