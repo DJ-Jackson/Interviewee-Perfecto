@@ -22,12 +22,12 @@ emp = 0
 def rating():
     global pos, neg, emp
     session.attributes['rating'] = 0 #rating starts at 0 points
-    neg *= 0.75
-    pos *= 1
-    emp *= 0.25
-    session.attributes['rating'] = pos - neg - emp
+    neg_r = 0.75 * neg
+    pos_r = 1 * pos
+    emp_r = emp * 0.25
+    session.attributes['rating'] = pos_r - neg_r - emp_r
     ratings = session.attributes['rating']
-    round_msg = 'Your interview rating based on your responses was a ' + str(session.attributes['rating'])+'.'
+    round_msg = 'You used ' + str(pos) + ' positive words, ' + str(neg) ' negative words, and ' +str(emp) ' empty words in your interview. Your score was a ' + str(session.attributes['rating'])+'.'
     if ratings >= 3:
         return round_msg + ' You had a pretty positive interview!'
     if ratings <= -2:
@@ -116,8 +116,8 @@ def generateQuestion(Freeform):
     sys.stderr.flush()
 
 
-    pos_words = ['hard-working',  'dedication', 'thank you', 'appreciate', 'diligent', 'motivation', 'initiative', 'grateful', 'determined', 'dynamic', 'mature', 'independent', 'happy', 'enjoy', 'splendid', 'goal', 'interested', 'opportunity', 'individual', 'fortunate', 'incredible', 'inspire', 'influence', 'achieve', 'honest', 'benefit', 'willing', 'effort', 'fantastic', 'balance', 'interact', 'enlightening', 'culture', 'innovation', 'involved', 'leadership']
-    neg_words = ['hate', 'dumb', 'stupid', 'ugly', 'lame', 'weird', 'nasty', 'terrible', 'horrible', 'awful', 'heck', 'darn', 'poop', 'shit', 'fuck', 'damn', 'hell', 'ass', 'bitch', 'cunt', 'cock', 'pussy', 'dick', 'asshole', 'safety school', 'backup school', 'sucks', 'blows', 'obsessed', 'shucks', 'drugs', 'alcohol', 'avoid', 'worst', 'desperate', 'failure', 'you know', 'you guys', 'bad']
+    pos_words = ['focus', 'hard-working',  'dedication', 'thank you', 'appreciate', 'diligent', 'motivation', 'initiative', 'grateful', 'determined', 'dynamic', 'mature', 'independent', 'happy', 'enjoy', 'splendid', 'goal', 'interested', 'opportunity', 'individual', 'fortunate', 'incredible', 'inspire', 'influence', 'achieve', 'honest', 'benefit', 'willing', 'effort', 'fantastic', 'balance', 'interact', 'enlightening', 'culture', 'innovation', 'involved', 'leadership']
+    neg_words = ['nigger', 'smarter than', 'hate', 'dumb', 'stupid', 'ugly', 'lame', 'weird', 'nasty', 'terrible', 'horrible', 'awful', 'heck', 'darn', 'poop', 'shit', 'fuck', 'damn', 'hell', 'ass', 'bitch', 'cunt', 'cock', 'pussy', 'dick', 'asshole', 'ass', 'safety school', 'backup school', 'sucks', 'blows', 'obsessed', 'shucks', 'drugs', 'alcohol', 'avoid', 'worst', 'desperate', 'failure', 'you know', 'you guys', 'bad']
     emp_words = ['sorry', 'kind of', 'sort of', 'amazing', 'basically', 'kind of', 'actually', 'so', 'stuff', 'sure', 'yeah', 'I don’t know', 'well', 'maybe', 'technically', 'I think', 'mostly', 'wait', 'I guess']
     pos_words = "|".join(pos_words)
     neg_words = "|".join(neg_words)
