@@ -22,12 +22,12 @@ emp = 0
 def rating():
     global pos, neg, emp
     session.attributes['rating'] = 0 #rating starts at 0 points
-    neg *= 0.75
-    pos *= 1
-    emp *= 0.25
-    session.attributes['rating'] = pos - neg - emp
+    neg_r = 0.75 * neg
+    pos_r = 1 * pos
+    emp_r = emp * 0.25
+    session.attributes['rating'] = pos_r - neg_r - emp_r
     ratings = session.attributes['rating']
-    round_msg = 'Your interview rating based on your responses was a ' + str(session.attributes['rating'])+'.'
+    round_msg = 'You used ' + str(pos) + ' positive words, ' + str(neg) ' negative words, and ' +str(emp) ' empty words. Your score was a ' + str(session.attributes['rating'])+'.'
     if ratings >= 3:
         return round_msg + ' You had a pretty positive interview!'
     if ratings <= -2:
