@@ -1,6 +1,6 @@
 hello: Welcome to College Interview. Ready to practice?
 
-instruction: Say “Repeat Question” to hear the question again, say “Next Question”  to move on, and say “End Interview” to end the interview and receive your feedback. If you are ready to start your interview say. 'start my interview'.
+instruction: Say “Repeat Question” to hear the question again, “Next Question”  to move on, and “End Interview” to end the interview and receive your feedback. If you are ready, say. 'start my interview'.
 
 greeting: Hello, how are you doing today?
 

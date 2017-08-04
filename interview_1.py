@@ -113,8 +113,8 @@ def generateQuestion(Freeform):
     sys.stderr.flush()
 
 
-    pos_words = ['hard-working',  'dedication', 'thank you', 'appreciate', 'diligent', 'motivation', 'initiative', 'grateful', 'determined', 'dynamic', 'mature', 'independent', 'happy', 'enjoy', 'splendid', 'goal', 'interested', 'opportunity', 'individual', 'fortunate', 'incredible', 'inspire', 'influence', 'achieve', 'honest', 'benefit', 'willing', 'effort', 'fantastic', 'balance', 'interact', 'enlightening', 'culture', 'innovation', 'involved', 'leadership']
-    neg_words = ['hate', 'dumb', 'stupid', 'ugly', 'lame', 'weird', 'nasty', 'terrible', 'horrible', 'awful', 'heck', 'darn', 'poop', 'shit', 'fuck', 'damn', 'hell', 'ass', 'bitch', 'cunt', 'cock', 'pussy', 'dick', 'asshole', 'safety school', 'backup school', 'sucks', 'blows', 'obsessed', 'shucks', 'drugs', 'alcohol', 'avoid', 'worst', 'desperate', 'failure', 'you know', 'you guys', 'bad']
+    pos_words = ['focus', 'hard-working',  'dedication', 'thank you', 'appreciate', 'diligent', 'motivation', 'initiative', 'grateful', 'determined', 'dynamic', 'mature', 'independent', 'happy', 'enjoy', 'splendid', 'goal', 'interested', 'opportunity', 'individual', 'fortunate', 'incredible', 'inspire', 'influence', 'achieve', 'honest', 'benefit', 'willing', 'effort', 'fantastic', 'balance', 'interact', 'enlightening', 'culture', 'innovation', 'involved', 'leadership']
+    neg_words = ['nigger', 'smarter than', 'hate', 'dumb', 'stupid', 'ugly', 'lame', 'weird', 'nasty', 'terrible', 'horrible', 'awful', 'heck', 'darn', 'poop', 'shit', 'fuck', 'damn', 'hell', 'ass', 'bitch', 'cunt', 'cock', 'pussy', 'dick', 'asshole', 'ass', 'safety school', 'backup school', 'sucks', 'blows', 'obsessed', 'shucks', 'drugs', 'alcohol', 'avoid', 'worst', 'desperate', 'failure', 'you know', 'you guys', 'bad']
     emp_words = ['sorry', 'kind of', 'sort of', 'amazing', 'basically', 'kind of', 'actually', 'so', 'stuff', 'sure', 'yeah', 'I don’t know', 'well', 'maybe', 'technically', 'I think', 'mostly', 'wait', 'I guess']
     pos_words = "|".join(pos_words)
     neg_words = "|".join(neg_words)
