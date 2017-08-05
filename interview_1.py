@@ -19,6 +19,8 @@ neg = 0
 pos = 0
 emp = 0
 
+
+
 def rating():
     global pos, neg, emp
     session.attributes['rating'] = 0 #rating starts at 0 points
@@ -45,18 +47,21 @@ def beginInterview():
     else:
         session.attributes['hello'] = 1
     # do I need and sessions?
+    with open('questions.yaml') as f:
+        questions = yaml.load(f.read())
     session.attributes['state'] = 'Hello' # set state as what you are in
     session.attributes['numberOfQuestions'] = 0
     session.attributes['badWords'] = 0
     session.attributes['goodWords'] = 0
     session.attributes['emptyWords'] = 0
+    session.attributes['questionList'] = questions
     session.attributes['question']  = None #question number asked
     #hello_msg = render_template('hello')
-    hello_msg = "Welcome to College Interviewee. Ready to practice?"
+    hello_msg = "Welcome to College Interview. Ready to practice?"
     return question(hello_msg) # makes alexa ask question
 
 @ask.intent("AMAZON.YesIntent")
-def instructions():
+def instructions(Freeform):
 
     sys.stderr.write('\n-----------------------[OLD state]----> '+str(session.attributes['state'])+'\n')
     sys.stderr.flush()
@@ -68,9 +73,15 @@ def instructions():
         sys.stderr.write('-----------------------[NEW state]----> '+str(session.attributes['state'])+'\n')
         sys.stderr.flush()
     #instruction_msg = render_template('instruction')
-    instruction_msg = "Say Repeat Question to hear the question again, Next Question  to move on, and End Interview to end the interview and receive your feedback. If you are ready, say start my interview."
-    return question(instruction_msg)
+        instruction_msg = "Say Repeat Question to hear the question again, Next Question  to move on, and End Interview to end the interview and receive your feedback. If you are ready, say start my interview."
+        return question(instruction_msg)
     
+    else:
+        session.attributes['state'] = 'Yes Intent Called' # set current state
+        sys.stderr.write('-----------------------[NEW state]----> '+str(session.attributes['state'])+'\n')
+        sys.stderr.flush()
+        generateQuestion(Freeform)
+        # finish this thing
     
 @ask.intent("GreetingIntent")
 def greeting():
@@ -102,14 +113,23 @@ def generateQuestion(Freeform):
          session.attributes['state'] = 'Question'
          sys.stderr.write('-----------------------[NEW state]----> '+str(session.attributes['state'])+'\n')
          sys.stderr.flush()
-         with open('questions.yaml') as f:
-            questions = yaml.load(f.read())
-         question_msg = random.choice(questions)
+         questionIndex = random.randint(0,len(session.attributes['questionList'])-1)
+         question_msg = session.attributes['questionList'][questionIndex]
+         session.attributes['question'] = question_msg
          session.attributes['numberOfQuestions'] += 1
-         session.attributes['state'] = 'Recording'
-         sys.stderr.write('-----------------------[NEW state]----> '+str(session.attributes['state'])+'\n')
-         sys.stderr.flush()
+         session.attributes['questionList'].pop([questionIndex])
+
    #words isn't a thing right now - FIXXXXXX
+         record(Freeform)
+    return question(question_msg)
+   
+   
+def record(Freeform):
+    
+    session.attributes['state'] = 'Recording'
+    sys.stderr.write('-----------------------[NEW state]----> '+str(session.attributes['state'])+'\n')
+    sys.stderr.flush()
+         
     words = Freeform 
     sys.stderr.write('------------------------------------------------------------')
     sys.stderr.write(words +'\n')
@@ -126,20 +146,23 @@ def generateQuestion(Freeform):
     neg += len(re.findall(neg_words, Freeform))
     emp += len(re.findall(emp_words, Freeform))
 
-
-    return question(question_msg)
-
-"""@ask.intent("SkipIntent")
-def repeatQuestion(Freeform):
-    session.attributes['state'] = 'Skip'
-    question_msg = generateQuestion(Freeform)
-    return question(question_msg)"""
-    
-    
-# FIXXXXXX
 @ask.intent("SkipIntent")
 def skipQuestion(Freeform):
-    skipQuestion = generateQuestion(Freeform)
+    if(session.attributes['state'] == 'Recording'):
+        session.attributes['state'] = 'Skip'
+        sys.stderr.write('-----------------------[NEW state]----> '+str(session.attributes['state'])+'\n')
+        sys.stderr.flush()
+        generateQuestion(Freeform)
+    
+@ask.intent("RepeatIntent")
+def repeatQuestion(Freeform):
+    if(session.attributes['state'] == 'Recording'):
+        session.attributes['state'] = 'Repeat'
+        sys.stderr.write('-----------------------[NEW state]----> '+str(session.attributes['state'])+'\n')
+        sys.stderr.flush()
+        record(Freeform)
+        return question(session.attributes['question'])
+
 
 @ask.intent("AMAZON.NoIntent")
 def all_done():
