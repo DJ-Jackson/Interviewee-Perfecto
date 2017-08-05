@@ -5,4 +5,11 @@ AMAZON.NoIntent bye
 AMAZON.NoIntent nah
 AMAZON.YesIntent alright
 GreetingIntent start my interview
+GreetingIntent start
+GreetingIntent start interview
+RepeatIntent repeat
+RepeatIntent repeat the question
+RepeatIntent repeat question
+RepeatIntent say that again
+RepeatIntent come again
 QuestionIntent {Freeform}

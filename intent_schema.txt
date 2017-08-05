@@ -1,4 +1,4 @@
-{
+{{
   "intents": [
     {
       "intent": "AMAZON.NoIntent"
@@ -8,6 +8,10 @@
     },
     {
       "intent": "GreetingIntent"
+    },
+   
+    {      "intent": "RepeatIntent"
+      
     },
     {
       "slots": [
