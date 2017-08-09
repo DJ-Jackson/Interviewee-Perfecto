@@ -1,4 +1,4 @@
-{{
+{
   "intents": [
     {
       "intent": "AMAZON.NoIntent"
@@ -9,9 +9,8 @@
     {
       "intent": "GreetingIntent"
     },
-   
-    {      "intent": "RepeatIntent"
-      
+    {
+      "intent": "RepeatIntent"
     },
     {
       "slots": [
@@ -21,6 +20,21 @@
         }
       ],
       "intent": "QuestionIntent"
+    },
+    {
+      "intent": "HelpIntent"
+    },
+    {
+      "slots": [
+        {
+          "name": "next",
+          "type": "play"
+        }
+      ],
+      "intent": "ContinueIntent"
+    },
+    {
+      "intent": "TipIntent"
     }
   ]
 }

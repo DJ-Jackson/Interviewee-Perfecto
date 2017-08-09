@@ -49,13 +49,17 @@ def beginInterview():
     # do I need and sessions?
     with open('questions.yaml') as f:
         questions = yaml.load(f.read())
+    with open('tips.yaml') as f:
+        tips = yaml.load(f.read())
     session.attributes['state'] = 'Hello' # set state as what you are in
     session.attributes['numberOfQuestions'] = 0
     session.attributes['badWords'] = 0
     session.attributes['goodWords'] = 0
     session.attributes['emptyWords'] = 0
     session.attributes['questionList'] = questions
-    session.attributes['question']  = None #question number asked
+    session.attributes['tipList'] = tips
+    session.attributes['tip'] = None
+    session.attributes['question']  = None #question asked
     #hello_msg = render_template('hello')
     hello_msg = "Welcome to College Interview developed at Carnegie Mellon University by the Summer Academy for Math and Science. Ready to practice?"
     return question(hello_msg) # makes alexa ask question
@@ -86,13 +90,15 @@ def instructions(Freeform):
         sys.stderr.flush()
         questionIndex = random.randint(0,len(session.attributes['questionList'])-1)
         question_msg = session.attributes['questionList'][questionIndex]
+        tip_msg = session.attributes['tipList'][questionIndex]
         session.attributes['question'] = question_msg
+        session.attributes['tip'] = tip_msg
         session.attributes['numberOfQuestions'] += 1
         session.attributes['questionList'].pop(questionIndex)
+        session.attributes['tipList'].pop(questionIndex)
 
         record(Freeform)
-    return question(question_msg)
-        
+        return question(question_msg)
     
 @ask.intent("HelpIntent")
 def help():
@@ -123,19 +129,23 @@ def cont(next):
         session.attributes['state'] = 'Continue' # set current state
         sys.stderr.write('-----------------------[NEW state]----> '+str(session.attributes['state'])+'\n')
         sys.stderr.flush()
-         
+        
+        
         session.attributes['state'] = 'Question'
         sys.stderr.write('-----------------------[NEW state]----> '+str(session.attributes['state'])+'\n')
         sys.stderr.flush()
         questionIndex = random.randint(0,len(session.attributes['questionList'])-1)
         question_msg = session.attributes['questionList'][questionIndex]
+        tip_msg = session.attributes['tipList'][questionIndex]
         session.attributes['question'] = question_msg
+        session.attributes['tip'] = tip_msg
         session.attributes['numberOfQuestions'] += 1
         session.attributes['questionList'].pop(questionIndex)
+        session.attributes['tipList'].pop(questionIndex)
 
-        record(next)
-    return question(question_msg)
-    
+        record(Freeform)
+        return question(question_msg) 
+        
 
 @ask.intent("QuestionIntent")
 def generateQuestion(Freeform):
@@ -145,23 +155,26 @@ def generateQuestion(Freeform):
          session.attributes['state'] = 'Question'
          sys.stderr.write('-----------------------[NEW state]----> '+str(session.attributes['state'])+'\n')
          sys.stderr.flush()
-  
-         greeting_response_msg = "I'm doing well, thank you for asking.. Tell me about yourself. "
+  #new line?
+         greeting_response_msg = "..... Tell me about yourself. "
          session.attributes['numberOfQuestions'] == 1
          return question(greeting_response_msg)
     
-    else: 
+    else:
          session.attributes['state'] = 'Question'
          sys.stderr.write('-----------------------[NEW state]----> '+str(session.attributes['state'])+'\n')
          sys.stderr.flush()
          questionIndex = random.randint(0,len(session.attributes['questionList'])-1)
          question_msg = session.attributes['questionList'][questionIndex]
+         tip_msg = session.attributes['tipList'][questionIndex]
          session.attributes['question'] = question_msg
+         session.attributes['tip'] = tip_msg
          session.attributes['numberOfQuestions'] += 1
          session.attributes['questionList'].pop(questionIndex)
+         session.attributes['tipList'].pop(questionIndex)
 
          record(Freeform)
-    return question(question_msg)
+         return question(question_msg)
    
    
 def record(Freeform):
@@ -195,6 +208,22 @@ def repeatQuestion():
         sys.stderr.flush()
     return question(session.attributes['question'])
 
+@ask.intent("TipIntent")
+def tip():
+    if(session.attributes['state'] == 'Recording' and session.attributes['numberOfQuestions'] == 1 ):
+        session.attributes['state'] = 'Tip'
+        sys.stderr.write('-----------------------[NEW state]----> '+str(session.attributes['state'])+'\n')
+        sys.stderr.flush()
+        tip_msg = "Try to portray yourself as someone unique. Describe your personality without making it sound cliche. Try to talk for around a minute" + "    " + "Say: continue, to move to the next question"
+        return question(tip_msg)
+        
+    else:
+        session.attributes['state'] = 'Tip'
+        sys.stderr.write('-----------------------[NEW state]----> '+str(session.attributes['state'])+'\n')
+        sys.stderr.flush()
+        tip_msg = session.attributes["tip"]
+        next_msg = "Say: continue, to move to the next question"
+        return question(tip_msg + "   " + next_msg)
 
 @ask.intent("AMAZON.NoIntent")
 def all_done():

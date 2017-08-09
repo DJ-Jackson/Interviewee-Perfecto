@@ -4,6 +4,7 @@ AMAZON.NoIntent end my interview
 AMAZON.NoIntent bye
 AMAZON.NoIntent nah
 AMAZON.YesIntent alright
+AMAZON.YesIntent ready
 GreetingIntent start my interview
 GreetingIntent start
 GreetingIntent start interview
@@ -13,3 +14,10 @@ RepeatIntent repeat question
 RepeatIntent say that again
 RepeatIntent come again
 QuestionIntent {Freeform}
+HelpIntent help
+HelpIntent help me
+ContinueIntent {next}
+TipIntent tip time
+TipIntent tip me
+TipIntent give me a tip 
+TipIntent tip please
