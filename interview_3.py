@@ -37,7 +37,14 @@ def rating():
     if -2 < ratings < 3:
         return round_msg + ' You did pretty well, but try to be more positive in your actual interview.'
 
+def feedback():
+    global pos, neg, emp
+    session.attributes['state'] = 'feedback'
+    sys.stderr.write('-----------------------[NEW state]----> '+str(session.attributes['state'])+'\n')
+    sys.stderr.flush()
+    msg = rating()+ " " + 'Good luck!'
 
+    return statement(msg)
 
 # first regular expression 'w' and then every time after that do 'a'
 @ask.launch
@@ -64,9 +71,9 @@ def beginInterview():
     hello_msg = "Welcome to College Interview developed at Carnegie Mellon University by the Summer Academy for Math and Science. Ready to practice?"
     return question(hello_msg) # makes alexa ask question
 
-@ask.intent("AMAZON.YesIntent")
-def instructions(Freeform):
-
+@ask.intent("YesIntent")
+def instructions(saidyes):
+    
     sys.stderr.write('\n-----------------------[OLD state]----> '+str(session.attributes['state'])+'\n')
     sys.stderr.flush()
 
@@ -77,7 +84,7 @@ def instructions(Freeform):
         sys.stderr.write('-----------------------[NEW state]----> '+str(session.attributes['state'])+'\n')
         sys.stderr.flush()
     #instruction_msg = render_template('instruction')
-        instruction_msg = "Say: Repeat, to hear the question again: skip, to move on, and: End Interview. to end the interview and receive your feedback. If you're not sure what to say, say: help. If you are ready, say start my interview."
+        instruction_msg = "Say: Repeat, to hear the question again: skip, to move on. tip, if you're unsure how to answer a question. and: End Interview. to end the interview and receive your feedback. If you are unsure of the instructions, say: help. If you are ready, say start my interview."
         return question(instruction_msg)
         
     
@@ -97,7 +104,7 @@ def instructions(Freeform):
         session.attributes['questionList'].pop(questionIndex)
         session.attributes['tipList'].pop(questionIndex)
 
-        record(Freeform)
+        record(saidyes)
         return question(question_msg)
     
 @ask.intent("HelpIntent")
@@ -107,7 +114,7 @@ def help():
         session.attributes['state'] = 'Help' # set current state
         sys.stderr.write('-----------------------[NEW state]----> '+str(session.attributes['state'])+'\n')
         sys.stderr.flush()
-        instruction_msg = "Say Repeat to hear the question again, skip to move on, and End Interview to end the interview and receive your feedback. If you're not sure what to say, say: help. If you are ready, say: continue iterview."
+        instruction_msg = "Say: Repeat, to hear the question again: skip, to move on. tip, if you're unsure how to answer a question. and: End Interview. to end the interview and receive your feedback. If you are unsure of the instructions, say: help. If you are ready, say: continue iterview."
         return question(instruction_msg)    
     
 @ask.intent("GreetingIntent")
@@ -124,8 +131,7 @@ def greeting():
 
 @ask.intent("ContinueIntent")
 def cont(next):
-    if session.attributes['state'] == 'Help': # origin state
-        
+
         session.attributes['state'] = 'Continue' # set current state
         sys.stderr.write('-----------------------[NEW state]----> '+str(session.attributes['state'])+'\n')
         sys.stderr.flush()
@@ -143,38 +149,39 @@ def cont(next):
         session.attributes['questionList'].pop(questionIndex)
         session.attributes['tipList'].pop(questionIndex)
 
-        record(Freeform)
+        record(next)
         return question(question_msg) 
         
 
 @ask.intent("QuestionIntent")
 def generateQuestion(Freeform):
     global pos, neg, emp
-   
-    if (session.attributes['state'] == 'Greeting' and session.attributes['numberOfQuestions'] == 0):
-         session.attributes['state'] = 'Question'
-         sys.stderr.write('-----------------------[NEW state]----> '+str(session.attributes['state'])+'\n')
-         sys.stderr.flush()
-  #new line?
-         greeting_response_msg = "..... Tell me about yourself. "
-         session.attributes['numberOfQuestions'] == 1
-         return question(greeting_response_msg)
+    if(session.attributes['numberOfQuestions'] == 21):
+         feedback()
+    else:    
+        if (session.attributes['state'] == 'Greeting' and session.attributes['numberOfQuestions'] == 0):
+            session.attributes['state'] = 'First Question'
+            sys.stderr.write('-----------------------[NEW state]----> '+str(session.attributes['state'])+'\n')
+            sys.stderr.flush()
+            greeting_response_msg = "..... Tell me about yourself. "
+            session.attributes['numberOfQuestions'] = 1
+            return question(greeting_response_msg)
     
-    else:
-         session.attributes['state'] = 'Question'
-         sys.stderr.write('-----------------------[NEW state]----> '+str(session.attributes['state'])+'\n')
-         sys.stderr.flush()
-         questionIndex = random.randint(0,len(session.attributes['questionList'])-1)
-         question_msg = session.attributes['questionList'][questionIndex]
-         tip_msg = session.attributes['tipList'][questionIndex]
-         session.attributes['question'] = question_msg
-         session.attributes['tip'] = tip_msg
-         session.attributes['numberOfQuestions'] += 1
-         session.attributes['questionList'].pop(questionIndex)
-         session.attributes['tipList'].pop(questionIndex)
+        else:
+            session.attributes['state'] = 'Question'
+            sys.stderr.write('-----------------------[NEW state]----> '+str(session.attributes['state'])+'\n')
+            sys.stderr.flush()
+            questionIndex = random.randint(0,len(session.attributes['questionList'])-1)
+            question_msg = session.attributes['questionList'][questionIndex]
+            tip_msg = session.attributes['tipList'][questionIndex]
+            session.attributes['question'] = question_msg
+            session.attributes['tip'] = tip_msg
+            session.attributes['numberOfQuestions'] += 1
+            session.attributes['questionList'].pop(questionIndex)
+            session.attributes['tipList'].pop(questionIndex)
 
-         record(Freeform)
-         return question(question_msg)
+            record(Freeform)
+            return question(question_msg)
    
    
 def record(Freeform):
@@ -189,7 +196,7 @@ def record(Freeform):
     sys.stderr.flush()
 
 
-    pos_words = ['focus', 'hard-working',  'dedication', 'thank you', 'appreciate', 'diligent', 'motivation', 'initiative', 'grateful', 'determined', 'dynamic', 'mature', 'independent', 'happy', 'enjoy', 'splendid', 'goal', 'interested', 'opportunity', 'individual', 'fortunate', 'incredible', 'inspire', 'influence', 'achieve', 'honest', 'benefit', 'willing', 'effort', 'fantastic', 'balance', 'interact', 'enlightening', 'culture', 'innovation', 'involved', 'leadership']
+    pos_words = ['focus', 'hard-working',  'dedication', 'thank you', 'appreciate', 'diligent', 'motivation', 'initiative', 'grateful', 'determined', 'dynamic', 'mature', 'independent', 'happy', 'enjoy', 'splendid', 'goal', 'interested', 'opportunity', 'individual', 'fortunate', 'incredible', 'inspire', 'influence', 'achieve', 'honest', 'benefit', 'willing', 'effort', 'fantastic', 'balance', 'interact', 'enlightening', 'culture', 'innovation', 'involved', 'leadership', 'diverse', 'multicultural' ]
     neg_words = ['nigger', 'smarter than', 'hate', 'dumb', 'stupid', 'ugly', 'lame', 'weird', 'nasty', 'terrible', 'horrible', 'awful', 'heck', 'darn', 'poop', 'shit', 'fuck', 'damn', 'hell', 'ass', 'bitch', 'cunt', 'cock', 'pussy', 'dick', 'asshole', 'ass', 'safety school', 'backup school', 'sucks', 'blows', 'obsessed', 'shucks', 'drugs', 'alcohol', 'avoid', 'worst', 'desperate', 'failure', 'you know', 'you guys', 'bad', 'negative']
     emp_words = ['sorry', 'kind of', 'sort of', 'amazing', 'basically', 'actually', 'so', 'stuff', 'sure', 'yeah', 'I don’t know', 'well', 'maybe', 'technically', 'I think', 'mostly', 'wait', 'I guess']
     pos_words = "|".join(pos_words)
@@ -210,11 +217,11 @@ def repeatQuestion():
 
 @ask.intent("TipIntent")
 def tip():
-    if(session.attributes['state'] == 'Recording' and session.attributes['numberOfQuestions'] == 1 ):
+    if( session.attributes['numberOfQuestions'] == 1 ):
         session.attributes['state'] = 'Tip'
         sys.stderr.write('-----------------------[NEW state]----> '+str(session.attributes['state'])+'\n')
         sys.stderr.flush()
-        tip_msg = "Try to portray yourself as someone unique. Describe your personality without making it sound cliche. Try to talk for around a minute" + "    " + "Say: continue, to move to the next question"
+        tip_msg = 'Try to portray yourself as someone unique. Describe your personality without making it sound cliche. Try to talk for around a minute..' + '    ' + 'Say: continue, to move to the next question'
         return question(tip_msg)
         
     else:
@@ -237,15 +244,13 @@ def all_done():
         session.attributes['state'] = 'Goodbye' # set current state
         sys.stderr.write('-----------------------[NEW state]----> '+str(session.attributes['state'])+'\n')
         sys.stderr.flush()
-    msg = 'Ah well...you could’ve gotten into college! Maybe next time pal! Goodbye'
-    
-    if session.attributes['state'] != 'Hello':
-        session.attributes['state'] = 'Goodbye2'
-        sys.stderr.write('-----------------------[NEW state]----> '+str(session.attributes['state'])+'\n')
-        sys.stderr.flush()
-    msg = rating()+ " " + 'Good luck!'
+        msg = 'Ah well...you could’ve gotten into college! Maybe next time pal! Goodbye'
+        return statement(msg)
 
-    return statement(msg)
+    else:
+        return feedback()
+    
+
 
 
 # get the recognition, speak it back and show on the screen

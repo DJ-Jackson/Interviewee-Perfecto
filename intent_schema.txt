@@ -3,9 +3,15 @@
     {
       "intent": "AMAZON.NoIntent"
     },
-    {
-      "intent": "AMAZON.YesIntent"
-    },
+     {
+      "slots": [
+        {
+          "name": "saidyes",
+          "type": "words"
+        }
+      ],
+    	 "intent": "YesIntent"
+     },
     {
       "intent": "GreetingIntent"
     },
@@ -37,4 +43,5 @@
       "intent": "TipIntent"
     }
   ]
+}
 }
