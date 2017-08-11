@@ -35,7 +35,7 @@ def rating():
     if ratings <= -2:
         return round_msg + ' Try to be a tad bit more positive in your actual interview. Think about practicing more before your interview.'
     if -2 < ratings < 3:
-        return round_msg + ' You did pretty well, but try to be more positive in your actual interview.'
+        return round_msg + ' Try to be more positive in your actual interview.'
 
 def feedback():
     global pos, neg, emp
@@ -76,7 +76,9 @@ def instructions(saidyes):
     
     sys.stderr.write('\n-----------------------[OLD state]----> '+str(session.attributes['state'])+'\n')
     sys.stderr.flush()
-
+    if(session.attributes['numberOfQuestions'] == 21):
+         sys.stderr.write('-----------------------[Q number]----> '+str('end was called'+'\n'))
+         return feedback()
     # the user bails immediately; i.e. no games were played. Express regret
     if session.attributes['state'] == 'Hello': # origin state
         
@@ -131,12 +133,15 @@ def greeting():
 
 @ask.intent("ContinueIntent")
 def cont(next):
-
-        session.attributes['state'] = 'Continue' # set current state
-        sys.stderr.write('-----------------------[NEW state]----> '+str(session.attributes['state'])+'\n')
-        sys.stderr.flush()
+    global pos, neg, emp
+    session.attributes['state'] = 'Continue' # set current state
+    sys.stderr.write('-----------------------[NEW state]----> '+str(session.attributes['state'])+'\n')
+    sys.stderr.flush()
+    if(session.attributes['numberOfQuestions'] == 21):
+         sys.stderr.write('-----------------------[Q number]----> '+str('end was called'+'\n'))
+         return feedback()
         
-        
+    else:
         session.attributes['state'] = 'Question'
         sys.stderr.write('-----------------------[NEW state]----> '+str(session.attributes['state'])+'\n')
         sys.stderr.flush()
@@ -157,7 +162,8 @@ def cont(next):
 def generateQuestion(Freeform):
     global pos, neg, emp
     if(session.attributes['numberOfQuestions'] == 21):
-         feedback()
+         sys.stderr.write('-----------------------[Q number]----> '+str('end was called'+'\n'))
+         return feedback()
     else:    
         if (session.attributes['state'] == 'Greeting' and session.attributes['numberOfQuestions'] == 0):
             session.attributes['state'] = 'First Question'
@@ -179,6 +185,7 @@ def generateQuestion(Freeform):
             session.attributes['numberOfQuestions'] += 1
             session.attributes['questionList'].pop(questionIndex)
             session.attributes['tipList'].pop(questionIndex)
+            sys.stderr.write('-----------------------[Q number]----> '+str(str(session.attributes['numberOfQuestions']))+'\n')
 
             record(Freeform)
             return question(question_msg)
@@ -197,7 +204,7 @@ def record(Freeform):
 
 
     pos_words = ['focus', 'hard-working',  'dedication', 'thank you', 'appreciate', 'diligent', 'motivation', 'initiative', 'grateful', 'determined', 'dynamic', 'mature', 'independent', 'happy', 'enjoy', 'splendid', 'goal', 'interested', 'opportunity', 'individual', 'fortunate', 'incredible', 'inspire', 'influence', 'achieve', 'honest', 'benefit', 'willing', 'effort', 'fantastic', 'balance', 'interact', 'enlightening', 'culture', 'innovation', 'involved', 'leadership', 'diverse', 'multicultural' ]
-    neg_words = ['nigger', 'smarter than', 'hate', 'dumb', 'stupid', 'ugly', 'lame', 'weird', 'nasty', 'terrible', 'horrible', 'awful', 'heck', 'darn', 'poop', 'shit', 'fuck', 'damn', 'hell', 'ass', 'bitch', 'cunt', 'cock', 'pussy', 'dick', 'asshole', 'ass', 'safety school', 'backup school', 'sucks', 'blows', 'obsessed', 'shucks', 'drugs', 'alcohol', 'avoid', 'worst', 'desperate', 'failure', 'you know', 'you guys', 'bad', 'negative']
+    neg_words = ['nigger', 'smarter than', 'hate', 'dumb', 'stupid', 'ugly', 'lame', 'weird', 'nasty', 'terrible', 'horrible', 'awful', 'heck', 'darn', 'poop', 'shit', 'fuck', 'damn', 'hell', 'ass', 'bitch', 'cunt', 'cock', 'pussy', 'dick', 'asshole', 'ass', 'safety school', 'backup school', 'sucks', 'blows', 'obsessed', 'shucks', 'drugs', 'alcohol', 'avoid', 'worst', 'desperate', 'failure', 'you know', 'you guys', 'bad', 'negative', 'dang']
     emp_words = ['sorry', 'kind of', 'sort of', 'amazing', 'basically', 'actually', 'so', 'stuff', 'sure', 'yeah', 'I don’t know', 'well', 'maybe', 'technically', 'I think', 'mostly', 'wait', 'I guess']
     pos_words = "|".join(pos_words)
     neg_words = "|".join(neg_words)
