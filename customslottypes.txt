@@ -1,0 +1,170 @@
+Type: inword
+
+I知 good
+I知 well
+I知 fine
+Not so good
+Bad
+Good
+Well Fine
+Sucky
+Awful
+Not well
+Terrible
+Great
+Lovely
+Wonderful
+Okay
+Swell
+Dandy
+I知 doing well
+I知 doing great
+Just fine
+I知 on top of the world
+I知 sad
+I知 feeling down
+I知 blue
+I知 horrible
+I am from
+I would
+I was 
+I want to attend your college
+Because I 
+I am interested in
+Your college has
+This college offers
+Here I could
+At this college 
+I would be able to
+I want to pursue
+I could do this
+I could do
+I知 from
+I am 
+I like
+I said
+I have said
+I used to
+Now that I
+I believe
+I feel like
+The way that
+I知 wondering
+I知 questioning
+I understand
+I do
+Well I am
+I want to get involved by
+I want to contribute
+I want to do
+I think that
+I know that 
+I wish that
+I致e always wanted
+I致e always known
+Right now I
+I知 going to
+I don稚 really like
+I would improve
+The three traits 
+This school
+I actually
+I want
+My school
+At home
+My friends
+I have
+My family is
+My parents
+In my house
+My community
+For me 
+Community is
+I would start with
+Success is
+I would define
+I would say
+My strength
+My weakness
+My greatest strength
+My greatest weakness
+My strength and weakness
+My strengths are
+My weaknesses are
+My best quality
+I want to major in
+The majors
+I am passionate about
+The teacher that
+The adult that
+The person that
+That痴 a good
+That痴 a great
+That痴 a tough
+I知 guessing
+While I
+The ideal
+I have always
+I am very interested in
+My favorite class
+My least favorite class
+Math
+Science
+English
+History
+Social studies
+Language
+I would spend
+I would give 
+If I had 
+I think I would
+I would change
+I can improve
+One issue
+One thing that could be
+Definitely would
+My biggest influence
+has most influenced my life
+In ten years
+Hopefully I will
+I will probably
+I will live in
+I will work for
+I will be doing
+My favorite book is
+I loved this book
+This book is my favorite
+I read 
+I love
+I have grown by
+I have changed
+I have developed
+I have improved
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Type: play
+
+continue interview
+continue my interview
+continue
+next question 
+next
+skip
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+alright 
+ready
+meh
+yes
+sure
+fine
+yeah
+see
+go for it 
+i guess
+maybe
+sea
+c
